@@ -1,0 +1,7 @@
+{
+  "name": "testing-overmindjs-ionic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
