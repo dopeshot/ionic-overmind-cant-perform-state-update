@@ -1,12 +1,44 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import { createActionsHook, createStateHook, Provider } from 'overmind-react'
+import { createOvermind, IContext } from 'overmind'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import reportWebVitals from './reportWebVitals'
+
+const state = {
+  count: 0
+}
+const actions = {
+  increaseCount({ state }: Context) {
+    state.count++;
+  },
+  decreaseCount({ state }: Context) {
+    state.count--;
+  }
+}
+export type Context = IContext<{
+  state: typeof state,
+  actions: typeof actions,
+}>
+
+
+const overmind = createOvermind({
+  state,
+  actions
+}
+, {
+  devtools: true
+})
+
+export const useAppState = createStateHook<Context>()
+export const useActions = createActionsHook<Context>()
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider value={overmind}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
